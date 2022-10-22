@@ -18,7 +18,9 @@ class OwnedScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->where('owner_id', '=', Auth::id());
+		if (Auth::user()) {
+			$builder->where('owner_id', '=', Auth::id());
+		}
     }
 
 	/**

@@ -47,18 +47,12 @@ class GuestLookup extends Component
 					->whereHas('person', function (Builder $query) {
 						$query->where('name', $this->query)->withoutOwner();
 					})
-					->with(['person' => function ($query) {
-						$query->withoutOwner();
-					}])
 					->get();
 
         $found_fuzzy = Response::where('event_id', $this->event->id)
                     ->whereHas('person', function (Builder $query) {
-                        $query->whereFullText('name', $this->query)->withoutOwner();
+                        $query->whereFullText('name', $this->query);
                     })
-					->with(['person' => function ($query) {
-						$query->withoutOwner();
-					}])
                     ->get();
 
 		$found_exact_count = $found_exact->count();
@@ -91,14 +85,10 @@ class GuestLookup extends Component
 	private function load_response($response)
 	{
 		if ($response[0]->group) {
-			$this->responses = $response[0]->group->members->load(['person' => function ($query) {
-				$query->withoutOwner();
-			}]);
+			$this->responses = $response[0]->group->members;
 		} else {
 			$this->responses = $response;
 		}
-
-		\Illuminate\Support\Facades\Log::debug($response);
 
         $this->responses->each(function ($item, $key) {
             $item['transition_to_state'] = $item['response_state'];
