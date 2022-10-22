@@ -56,6 +56,11 @@ class Event extends Model
         return $this->hasMany(Group::class);
     }
 
+	public function owner()
+	{
+		return $this->belongsTo(User::class);
+	}
+
     /**
      * The "booted" method of the model.
      *

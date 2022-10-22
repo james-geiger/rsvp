@@ -23,6 +23,7 @@
 		@endif
 		<div class="max-w-xl px-6 mx-auto lg:px-8">
 			<h1 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">{{ $event->name }}</h1>
+			<h2 class="mt-1 text-sm text-gray-500">{{ $event->owner->name }} (Host)</h2>
 			<div class="flex flex-col mt-1 sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-8">
 				<div class="flex items-center mt-2 text-sm text-gray-500">
 					<!-- Heroicon name: mini/calendar -->
