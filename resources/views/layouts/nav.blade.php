@@ -3,7 +3,8 @@
       <div class="relative flex items-center justify-between h-16 border-b border-gray-200">
         <div class="flex items-center">
           <div class="flex-shrink-0">
-            <img class="w-auto h-8" src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=500" alt="Your Company">
+			<x-application-logo class="w-auto h-8 text-indigo-800" />
+            <!--<img class="w-auto h-8" src="https://tailwindui.com/img/logos/mark.svg?color=violet&shade=500" alt="Your Company">-->
           </div>
 
           <!-- Links section -->
@@ -54,7 +55,7 @@
         <!-- Actions section -->
         <div class="hidden lg:ml-4 lg:block">
           <div class="flex items-center">
-            <button type="button" class="flex-shrink-0 p-1 text-gray-400 rounded-full bg-gray-50 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-50">
+            <button type="button" class="flex-shrink-0 p-1 mr-4 text-gray-400 rounded-full bg-gray-50 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-50">
               <span class="sr-only">View notifications</span>
               <!-- Heroicon name: outline/bell -->
               <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
@@ -68,7 +69,7 @@
               <x-slot name="trigger">
                 <button type="button" class="flex text-sm text-white rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-50" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                   <span class="sr-only">Open user menu</span>
-                  <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                  <img class="w-8 h-8 rounded-full" src="https://ui-avatars.com/api/?name={{ Auth::user()->name }}&color=7F9CF5&background=EBF4FF" alt="">
                 </button>
             </x-slot>
 
@@ -83,11 +84,10 @@
                   To: "transform opacity-0 scale-95"
               -->
               <x-slot name="content">
-              <div class="absolute right-0 z-10 w-48 py-1 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
-                <!-- Active: "bg-gray-100", Not Active: "" -->
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+				
+				<x-dropdown-link href="#">Your Profile</x-dropdown-link>
+				
+				<x-dropdown-link href="#">Settings</x-dropdown-link>
 
                 <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -98,7 +98,6 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
-              </div>
             </x-slot>
 </x-dropdown>
           </div>
