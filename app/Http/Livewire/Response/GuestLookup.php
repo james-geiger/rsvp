@@ -45,27 +45,33 @@ class GuestLookup extends Component
 
 		$found_exact = Response::where('event_id', $this->event->id)
 					->whereHas('person', function (Builder $query) {
-						$query->withoutGlobalScope(OwnedScope::class)->where('name', $this->query);
+						$query->where('name', $this->query)->withoutOwner();
 					})
+					->with(['person' => function ($query) {
+						$query->withoutOwner();
+					}])
 					->get();
 
         $found_fuzzy = Response::where('event_id', $this->event->id)
                     ->whereHas('person', function (Builder $query) {
-                        $query->withoutGlobalScope(OwnedScope::class)->whereFullText('name', $this->query);
+                        $query->whereFullText('name', $this->query)->withoutOwner();
                     })
+					->with(['person' => function ($query) {
+						$query->withoutOwner();
+					}])
                     ->get();
 
 		$found_exact_count = $found_exact->count();
         $found_fuzzy_count = $found_fuzzy->count();
 
 		if ($found_exact_count === 1) {
-			$this->load_response($found_exact[0]);
+			$this->load_response($found_exact);
 			return;
 		}
 
 		if ($found_fuzzy_count === 1)
 		{
-			$this->load_response($found_fuzzy[0]);
+			$this->load_response($found_fuzzy);
 			return;
 		}
 
@@ -84,15 +90,18 @@ class GuestLookup extends Component
      */
 	private function load_response($response)
 	{
-		if ($response->group) {
-			$this->responses = $response->group->members;
+		if ($response[0]->group) {
+			$this->responses = $response[0]->group->members;
 		} else {
 			$this->responses = $response;
 		}
 
+		\Illuminate\Support\Facades\Log::debug($response);
+
         $this->responses->each(function ($item, $key) {
             $item['transition_to_state'] = $item['response_state'];
         });
+		
 	}
 
     public function save()

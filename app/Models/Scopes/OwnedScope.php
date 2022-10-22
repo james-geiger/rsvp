@@ -20,4 +20,16 @@ class OwnedScope implements Scope
     {
         $builder->where('owner_id', '=', Auth::id());
     }
+
+	/**
+     * Extend the query builder with the needed functions.
+     *
+     * @param Builder $builder
+     */
+    public function extend(Builder $builder)
+    {
+        $builder->macro('withoutOwner', function (Builder $builder) {
+            return $builder->withoutGlobalScope($this);
+        });
+    }
 }
