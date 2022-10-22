@@ -91,7 +91,9 @@ class GuestLookup extends Component
 	private function load_response($response)
 	{
 		if ($response[0]->group) {
-			$this->responses = $response[0]->group->members;
+			$this->responses = $response[0]->group->members->load(['person' => function ($query) {
+				$query->withoutOwner();
+			}]);
 		} else {
 			$this->responses = $response;
 		}
