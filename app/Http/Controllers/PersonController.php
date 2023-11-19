@@ -18,7 +18,9 @@ class PersonController extends Controller
      */
     public function index()
     {
-        //
+        $people = Person::all();
+
+        return view('person.index', ['people' => $people]);
     }
 
     /**
@@ -85,7 +87,7 @@ class PersonController extends Controller
      */
     public function edit(Person $person)
     {
-        //
+        return view('person.edit', ['person' => $person]);
     }
 
     /**

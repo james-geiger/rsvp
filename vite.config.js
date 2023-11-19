@@ -9,30 +9,7 @@ export default defineConfig(({ command, mode }) => {
 	const env = loadEnv(mode, process.cwd(), '')
 
 	let serverConfig = {}
-  
-	if (env.APP_ENV === 'local'){
-		// Set the host based on APP_URL
-		let host = new URL(env.APP_URL).host
-		let homeDir = homedir()
-	
-		if (homeDir) {
-		serverConfig = {
-			https: {
-			key: fs.readFileSync(
-				resolve(homeDir, `.config/valet/Certificates/${host}.key`),
-			),
-			cert: fs.readFileSync(
-				resolve(homeDir, `.config/valet/Certificates/${host}.crt`),
-			),
-			},
-			hmr: {
-			host
-			},
-			host
-		}
-		}
-	}
-  
+
 	return {
 	  plugins: laravel({
 		input: [

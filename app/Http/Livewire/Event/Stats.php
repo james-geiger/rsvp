@@ -13,7 +13,7 @@ class Stats extends Component
 
 	public Event $event;
 
-	protected $listeners = ['updateGuests' => 'updateEvent'];
+	protected $listeners = ['response.added' => 'updateEvent', 'response.submitted' => 'updateEvent', 'response.deleted' => 'updateEvent'];
 
 	public function mount($event)
 	{

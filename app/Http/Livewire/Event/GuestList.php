@@ -6,32 +6,29 @@ use Livewire\Component;
 use App\Models\Event;
 use App\Models\Person;
 use App\Models\Response;
+use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
 
 class GuestList extends Component
 {
     public Event $event;
 
-    public $invites;
+    public $responses;
 
-    public $query;
+    public $selections;
 
-    public $results;
+    protected $listeners = ['response.added' => 'update', 'response.deleted' => 'update', 'response.toggle' => 'toggle'];
 
-	public $all_found_results;
+    public function __construct()
+    {
+        $this->selections = collect([]);
+    }
 
     public function mount($event)
     {
         $this->event = $event;
-        $this->invites = $this->event->invites;
-        $this->query = '';
-        $this->results = collect([]);
-		$this->all_found_results = collect([]);
-    }
-
-    public function booted()
-    {
-        $this->invites = $this->event->invites;
+        $this->responses = $this->event->responses;
     }
 
     public function render()
@@ -39,59 +36,34 @@ class GuestList extends Component
         return view('livewire.event.guest-list');
     }
 
-    public function add(Person $person)
+    public function group()
     {
-        $response = Response::create([
-            'event_id' => $this->event->id,
-            'person_id' => $person->id
-        ]);
-		$this->emit('updateGuests');
-        $this->event = $this->event->refresh();
-        $this->invites = $this->event->invites;
-        $this->query = '';
+        $group = Group::create(['event_id' => $this->event->id]);
+
+        Response::whereIn('id',$this->selections->all())->update(['group_id' => $group->id]);
+
+        $this->clearSelected();
     }
 
-	public function addNewDetail()
-	{
-		if ($this->all_found_results->count() === 0) {
-			return redirect()->route('person.create', ['name' => $this->query, 'event' => $this->event->id]);
-		}
-	}
-
-	public function addNew()
-	{
-		$person = Person::create([
-			'name' => $this->query,
-			'owner_id' => Auth::id()
-		]);
-
-		$this->add($person);
-		
-	}
-
-    public function search()
+    public function clearSelected()
     {
-        
-        $all_found_results = Person::search($this->query)->where('owner_id', auth()->user()->id)->get();
-        $found = $all_found_results->diff($this->invites);
-
-        $this->results = $found;
-		$this->all_found_results = $all_found_results;
+        $this->selections = collect();
+        $this->emit('selection.clear');
     }
 
-	public function respond(Response $response, $transition)
-	{
-		$response->response_state->transitionTo($transition, 'Marked as '.$transition.' by host.' );
-		$this->emit('updateGuests');
-		$this->event = $this->event->refresh();
-        $this->invites = $this->event->invites;
-	}
-
-	public function delete(Response $response)
-	{
-		$response->delete();
-		$this->emit('updateGuests');
+    public function update()
+    {
         $this->event = $this->event->refresh();
-        $this->invites = $this->event->invites;
-	}
+        $this->responses = $this->event->responses;
+    }
+
+    public function toggle($response)
+    {
+        if ($this->selections->contains($response)) {
+            $this->selections = $this->selections->diff([$response]);
+            return;
+        }
+
+        $this->selections->push($response);
+    }
 }

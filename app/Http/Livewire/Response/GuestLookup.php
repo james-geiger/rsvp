@@ -49,27 +49,31 @@ class GuestLookup extends Component
 					})
 					->get();
 
-        $found_fuzzy = Response::where('event_id', $this->event->id)
-                    ->whereHas('person', function (Builder $query) {
-                        $query->whereFullText('name', $this->query);
-                    })
-                    ->get();
-
-		$found_exact_count = $found_exact->count();
-        $found_fuzzy_count = $found_fuzzy->count();
-
-		if ($found_exact_count === 1) {
+        if ($found_exact->count() === 1) {
 			$this->load_response($found_exact);
 			return;
 		}
 
-		if ($found_fuzzy_count === 1)
+        $found_search = Person::search($this->query)->get();
+
+        $found_fuzzy = Response::where('event_id', $this->event->id)
+            ->whereIn('person_id', $found_search->pluck('id'))->get();
+
+        if ($found_fuzzy->count() === 1)
 		{
 			$this->load_response($found_fuzzy);
 			return;
 		}
+/*
+        $found_fuzzy = Response::where('event_id', $this->event->id)
+                    ->whereHas('person', function (Builder $query) {
 
-        if ($found_fuzzy_count > 1) {
+                        //$query->whereFullText('name', $this->query);
+                    })
+                    ->get();
+*/
+
+        if ($found_fuzzy->count() > 1) {
             $this->error_message = 'We found multiple people who match that name.  Please adjust your search to be more specific and try again.';
 			return;
 		}
@@ -93,19 +97,19 @@ class GuestLookup extends Component
         $this->responses->each(function ($item, $key) {
             $item['transition_to_state'] = $item['response_state'];
         });
-		
+
 	}
 
     public function save()
     {
         $this->validate();
- 
+
         foreach ($this->responses as $response) {
 
             $transition = $response->transition_to_state;
 
             unset($response['transition_to_state']);
-            
+
             $response->response_state->transitionTo($transition, $this->message);
 
         }

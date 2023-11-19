@@ -11,12 +11,13 @@
           <div class="hidden lg:ml-10 lg:block">
             <div class="flex space-x-4">
               <!-- Current: "bg-gray-100", Default: "hover:text-gray-700" -->
-              <x-nav-responsive-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-                </x-nav-responsive-link>
                 <x-nav-responsive-link :href="route('events.index')" :active="request()->routeIs('events.*')">
                 {{ __('Events') }}
                 </x-nav-responsive-link>
+
+                <x-nav-responsive-link :href="route('person.index')" :active="request()->routeIs('person.*')">
+                    {{ __('Directory') }}
+                    </x-nav-responsive-link>
             </div>
           </div>
         </div>
@@ -84,9 +85,9 @@
                   To: "transform opacity-0 scale-95"
               -->
               <x-slot name="content">
-				
+
 				<x-dropdown-link href="#">Your Profile</x-dropdown-link>
-				
+
 				<x-dropdown-link href="#">Settings</x-dropdown-link>
 
                 <form method="POST" action="{{ route('logout') }}">
@@ -109,12 +110,14 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden" class="hidden border-b border-gray-200 sm:hidden bg-gray-50" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
         <!-- Current: "bg-gray-100", Default: "hover:bg-gray-100" -->
-		<x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-                </x-responsive-nav-link>
+
                 <x-responsive-nav-link :href="route('events.index')" :active="request()->routeIs('events.*')">
                 {{ __('Events') }}
                 </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('person.index')" :active="request()->routeIs('person.*')">
+                    {{ __('Directory') }}
+                    </x-responsive-nav-link>
       </div>
       <div class="pt-4 pb-3 border-t border-gray-200">
         <div class="flex items-center px-5">

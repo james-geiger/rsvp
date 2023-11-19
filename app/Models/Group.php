@@ -10,6 +10,8 @@ class Group extends Model
 {
     use HasFactory, HasUlids;
 
+    protected $fillable = ['event_id'];
+
     public function event()
     {
         return $this->belongsTo(Event::class);

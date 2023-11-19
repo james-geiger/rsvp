@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasUlids, Notifiable;
+    use HasApiTokens, HasFactory, HasUlids, Notifiable, HasSlug;
 
     /**
      * The attributes that are mass assignable.
@@ -43,8 +45,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('display_name');
+    }
+
 	public function events()
     {
         return $this->hasMany(Event::class);
     }
+
+
 }

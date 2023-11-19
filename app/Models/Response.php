@@ -27,7 +27,6 @@ class Response extends Pivot
         'response_date'
     ];
 
-
     protected $casts = [
         'response_state' => ResponseState::class,
 		'response_date' => 'datetime',

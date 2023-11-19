@@ -17,6 +17,7 @@ return new class extends Migration
             $table->ulid('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('display_name'); // Field name same as your `saveSlugsTo`
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

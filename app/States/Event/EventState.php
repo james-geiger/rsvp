@@ -13,6 +13,8 @@ abstract class EventState extends State
             ->default(Draft::class)
             ->allowTransition(Draft::class, Published::class)
             ->allowTransition(Published::class, Draft::class)
+            ->allowTransition(Draft::class, Draft::class)
+            ->allowTransition(Published::class, Published::class)
         ;
     }
 }

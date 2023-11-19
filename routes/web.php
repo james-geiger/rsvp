@@ -21,15 +21,16 @@ use App\Http\Controllers\PersonController;
 // Private Routes
 
 Route::middleware(['auth'])->group(function () {
-	Route::get('/dashboard', function () {
-		return view('dashboard');
-	})->name('dashboard');
 
-	Route::get('/{user:display_name}/events', [EventController::class, 'index'])->name('events.index');
-	Route::get('/{user:display_name}/{event}', [EventController::class, 'show'])->name('events.show');
+	Route::get('/events', [EventController::class, 'index'])->name('events.index');
+	Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
+    Route::patch('/events/{event}/update', [EventController::class, 'update'])->name('events.update');
+    Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
 	Route::get('/new-event', [EventController::class, 'create'])->name('events.create');
 	Route::post('/new-event', [EventController::class, 'store'])->name('events.store');
-	Route::get('/{user:display_name}/guests', [PersonController::class, 'index'])->name('person.index');
+	Route::get('/directory', [PersonController::class, 'index'])->name('person.index');
+    Route::get('/directory/{person}', [PersonController::class, 'edit'])->name('person.edit');
+    Route::patch('/directory/{person}', [PersonController::class, 'update'])->name('person.update');
 	Route::get('/new-person', [PersonController::class, 'create'])->name('person.create');
 	Route::post('/new-person', [PersonController::class, 'store'])->name('person.store');
 	Route::get('/find-people', [SearchController::class, 'person']);

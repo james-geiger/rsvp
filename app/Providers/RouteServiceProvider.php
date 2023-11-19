@@ -19,7 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/events';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -43,7 +43,7 @@ class RouteServiceProvider extends ServiceProvider
 			return Event::withoutGlobalScope(OwnedScope::class)->where('slug', $value)->firstOrFail();
 		});
 
-		
+
     }
 
     /**

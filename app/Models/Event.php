@@ -34,8 +34,8 @@ class Event extends Model
      * @var array
      */
     protected $casts = [
-        'date' => 'datetime',
-        'begin_time' => 'datetime',
+        'date' => 'datetime:Y-m-d',
+        'begin_time' => 'datetime:H:i:s',
 		'state' => EventState::class
     ];
 
@@ -49,6 +49,11 @@ class Event extends Model
     public function invites()
     {
         return $this->belongsToMany(Person::class,'responses')->withPivot(Response::PIVOT_ATTRIBUTES)->using(Response::class)->as('response');
+    }
+
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
     }
 
     public function groups()

@@ -62,7 +62,7 @@ class EventController extends Controller
      */
     public function show(User $user, Event $event)
     {
- 
+
         $event->loadCount([
             'invites',
             'invites as accepted_invites_count' => function (Builder $query) {
@@ -84,7 +84,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        return view('event.edit', ['event' => $event]);
     }
 
     /**
@@ -96,7 +96,11 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        //
+        $event->fill($request->validated());
+
+        $event->save();
+
+        return redirect()->route('events.show', ['event' => $event]);
     }
 
     /**
@@ -127,6 +131,6 @@ class EventController extends Controller
 		//}
 
 		//return abort(404);
-        
+
     }
 }
