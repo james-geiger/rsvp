@@ -21,6 +21,7 @@
 			</div>
 		</div>
 		@endif
+        @if(auth()->user())
         @if($event->state->public() && auth()->user()->id == $event->owner_id)
 		<div class="max-w-4xl p-4 mx-auto mb-8 rounded-md bg-yellow-50">
 			<div class="flex">
@@ -42,6 +43,7 @@
 			</div>
 		</div>
 		@endif
+        @endif
 		<div class="max-w-xl px-6 mx-auto lg:px-8">
 			<h1 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:tracking-tight">{{ $event->name }}</h1>
 			<h2 class="mt-1 text-sm text-gray-500">{{ $event->owner->name }} (Host)</h2>
