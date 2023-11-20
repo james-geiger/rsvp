@@ -34,13 +34,11 @@ Route::middleware(['auth'])->group(function () {
 	Route::get('/new-person', [PersonController::class, 'create'])->name('person.create');
 	Route::post('/new-person', [PersonController::class, 'store'])->name('person.store');
 	Route::get('/find-people', [SearchController::class, 'person']);
-
 });
-
 
 // Public Routes
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 Route::get('/rsvp/{user:display_name}/{any_event}', [EventController::class, 'respond'])->name('rsvp.show');
 Route::get('/rsvp/{event}/find', [ResponseController::class, 'find']);

@@ -1,7 +1,7 @@
 <x-app-layout>
 	<x-slot name="header">
 		<div class="flex-1 min-w-0">
-			<h1 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">{{ $event->name }}</h1>
+			<h1 class="mt-2 text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:tracking-tight">{{ $event->name }}</h1>
 			<livewire:event.stats :event="$event" />
 		</div>
 		<div class="flex mt-5 xl:mt-0 xl:ml-4">
